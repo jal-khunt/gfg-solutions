@@ -1,27 +1,19 @@
 class Solution {
-    int n;
-    vector<int> t;
   public:
-    int solve(int i, vector<int>& height){
-        if(i >= n-1) return 0;
-        
-        if(t[i] != -1)
-            return t[i];
-        
-        int one_step = INT_MAX, two_step = INT_MAX;
-        if(i+1 < n)
-            one_step = abs(height[i] - height[i+1]) + solve(i+1, height);
-        if(i + 2 < n)
-            two_step = abs(height[i] - height[i+2]) + solve(i+2, height);
-        
-        return t[i] = min(one_step, two_step);
-    }
-  
     int minCost(vector<int>& height) {
-        // Code here
-        n = height.size();
-        t.resize(n+1, -1);
+        int n = height.size();
+        if(n == 1) return 0;
         
-        return solve(0, height);
+        int a = 0, b = abs(height[0] - height[1]);
+        
+        for(int i = 2; i < n; i++){
+            int one_step = abs(height[i] - height[i-1]) + b;
+            int two_step = abs(height[i] - height[i-2]) + a;
+            
+            a = b;
+            b = min(one_step, two_step);
+        }
+        
+        return b;
     }
 };
